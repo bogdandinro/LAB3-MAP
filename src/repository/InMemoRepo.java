@@ -1,55 +1,57 @@
 package repository;
 
 import entities.Entity;
+import entities.validator.ValidationException;
 import entities.validator.Validator;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class InMemoRepo<ID, E extends Entity<ID>> implements CrudRepository<ID,E>{
-    private Map<ID,E> entities;
+public class InMemoRepo<ID, E extends Entity<ID>> implements CrudRepository<ID, E>{
+    private Map<ID, E> entities;
+    private Validator<E> validator;
 
     public InMemoRepo(Validator<E> validator) {
         this.validator = validator;
-        entities = new HashMap<ID, E>();
-    }
-    private Validator<E> validator;
-
-    @Override
-    public E save(E entity)
-    {
-        if (entity == null)
-        {
-            throw new IllegalArgumentException("Entity must not be null");
-        }
-        if (entities.containsKey(entity.getId())) {
-            return entity;
-        }
-        validator.validate(entity);
-        entities.put(entity.getId(), entity);
-        return null;
+        this.entities = new HashMap();
     }
 
-    @Override
     public E findOne(ID id) {
-        return null;
+        return entities.get(id);
     }
 
-    @Override
     public Iterable<E> findAll() {
-        return entities.values();
+        return this.entities.values();
     }
 
-    @Override
+    public E save(E entity) throws ValidationException {
+        if (entity == null) {
+            throw new IllegalArgumentException("Entitatea nu poate sa fie null!\n");
+        } else if (entity.getId() == null) {
+            throw new IllegalArgumentException("Id-ul nu poate sa fie null!\n");
+        } else if (this.entities.containsKey(entity.getId())) {
+            return entity;
+        } else {
+            this.validator.validate(entity);
+            this.entities.put(entity.getId(), entity);
+            return null;
+        }
+    }
+
     public E delete(ID id) {
-        return null;
+        E elem = this.findOne(id);
+        this.entities.remove(id);
+        return elem;
     }
 
-    @Override
     public E update(E entity) {
-        return null;
+        E elem = this.findOne(entity.getId());
+        if (elem != null) {
+            this.delete(entity.getId());
+            this.save(entity);
+            return elem;
+        } else {
+            return null;
+        }
     }
-
-
-
 }

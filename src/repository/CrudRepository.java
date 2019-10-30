@@ -46,6 +46,7 @@ public interface CrudRepository<ID, E extends Entity<ID>> {
      * @throws IllegalArgumentException
      * if the given id is null.
      */
+
     E delete(ID id);
     /**
      *
