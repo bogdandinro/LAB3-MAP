@@ -1,6 +1,6 @@
 package repository;
 
-import entities.Student;
+import entities.Tema;
 import entities.validator.Validator;
 
 import java.io.BufferedWriter;
@@ -12,39 +12,38 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.List;
 
-
-public class StudentFileRepository extends AbstractRepository<Long, Student> {
-
-
-    public StudentFileRepository(Validator validator, String filename) {
+public class TemaFileRepository  extends AbstractRepository<Long,Tema>{
+    public TemaFileRepository(Validator validator, String filename) {
         super(validator, filename);
     }
 
     protected void loadData() {
         Path path = Paths.get(super.filename);
+
         try {
             List<String> lines = Files.readAllLines(path);
-            lines.forEach(linie -> {
-                //E entity = creatiEntity(linie);
+            lines.forEach((linie) -> {
                 String[] params = linie.split(";");
-                Student s = new Student(params[1],Float.parseFloat(params[2]),params[3],Integer.parseInt(params[4]),params[5],params[6]);
-                s.setId(Long.parseLong(params[0]));
-                super.save(s);
+                Tema tema = new Tema(params[1], Integer.parseInt(params[2]), Integer.parseInt(params[3]));
+                tema.setId(Long.parseLong(params[0]));
+                super.save(tema);
             });
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException var3) {
+            var3.printStackTrace();
         }
+
     }
-    public void saveData(Iterable<Student> students) {
+
+    public void saveData(Iterable<Tema> teme) {
         try {
-            BufferedWriter bf = new BufferedWriter(new FileWriter("data/studenti.txt"));
+            BufferedWriter bf = new BufferedWriter(new FileWriter("data/teme.txt"));
 
             try {
-                Iterator var3 = students.iterator();
+                Iterator var3 = teme.iterator();
 
                 while(var3.hasNext()) {
-                    Student student = (Student)var3.next();
-                    bf.write(student.toString());
+                    Tema tema = (Tema)var3.next();
+                    bf.write(tema.toString());
                     bf.write(10);
                 }
             } catch (Throwable var6) {
@@ -64,4 +63,3 @@ public class StudentFileRepository extends AbstractRepository<Long, Student> {
 
     }
 }
-

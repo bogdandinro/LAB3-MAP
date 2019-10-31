@@ -25,17 +25,20 @@ public class InMemoRepo<ID, E extends Entity<ID>> implements CrudRepository<ID, 
     }
 
     public E save(E entity) throws ValidationException {
-        if (entity == null) {
+        if (entity == null)
+        {
             throw new IllegalArgumentException("Entitatea nu poate sa fie null!\n");
-        } else if (entity.getId() == null) {
-            throw new IllegalArgumentException("Id-ul nu poate sa fie null!\n");
-        } else if (this.entities.containsKey(entity.getId())) {
-            return entity;
-        } else {
-            this.validator.validate(entity);
-            this.entities.put(entity.getId(), entity);
-            return null;
         }
+        if (entity.getId() == null)
+        {
+            throw new IllegalArgumentException("Id-ul nu poate sa fie null!\n");
+        }
+        if (entities.containsKey(entity.getId())) {
+            return entity;
+        }
+        validator.validate(entity);
+        entities.put(entity.getId(), entity);
+        return null;
     }
 
     public E delete(ID id) {
