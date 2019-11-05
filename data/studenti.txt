@@ -1,6 +1,2 @@
-1;Gigel;Andrei;225;csubb;mirciulica
-2;Vasile;Ioji;226;csubb;jkkl
-3;Pop;Cobi;227;csubb;gabi
-4;Rafa;Miron;228;hgh;patri
-9;Pop;George;225;misu;Gabitzu
-10;Pisti;Geo;221;dasda;rqeq
+1;Gigel;8;Andrei;225;csubb;mirciulica
+2;Vasile;7;Ioji;226;csubb;jkkl

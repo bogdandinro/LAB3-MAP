@@ -6,69 +6,121 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class StructuraSemestru {
-    private int nrSaptamani;
-    private int inceputVacanta;
-    private int sfarsitVacanta;
-    private ArrayList<Perioada> saptamani;
-    private LocalDate inceputSemestru;
+    int anUniversitar;
+    int semestru;
+    private LocalDate startSemester;
+    private LocalDate beginHoliday;
+    private LocalDate endHoliday;
+    private LocalDate endSemester;
 
-    private void genereazaSemestru() {
-        this.saptamani.clear();
-
-        int i;
-        for(i = 0; i < this.inceputVacanta; ++i) {
-            this.saptamani.add(i, new Perioada(this.inceputSemestru.plusDays((long)(7 * i)), this.inceputSemestru.plusDays((long)(7 * i + 6))));
-        }
-
-        for(int j = this.sfarsitVacanta; i < this.nrSaptamani; ++j) {
-            this.saptamani.add(i, new Perioada(this.inceputSemestru.plusDays((long)(7 * j)), this.inceputSemestru.plusDays((long)(7 * j + 6))));
-            ++i;
-        }
-
+    public StructuraSemestru(int anUniversitar, int semestru, LocalDate startSemester, LocalDate beginHoliday, LocalDate endHoliday, LocalDate endSemester) {
+        this.anUniversitar = anUniversitar;
+        this.semestru = semestru;
+        this.startSemester = startSemester;
+        this.beginHoliday = beginHoliday;
+        this.endHoliday = endHoliday;
+        this.endSemester = endSemester;
     }
 
-    public StructuraSemestru(int nrSaptamani, int inceputVacanta, int sfarsitVacanta, LocalDate inceputSemestru) {
-        this.saptamani = new ArrayList(this.nrSaptamani);
-        this.nrSaptamani = nrSaptamani;
-        this.inceputVacanta = inceputVacanta;
-        this.sfarsitVacanta = sfarsitVacanta;
-        this.inceputSemestru = inceputSemestru;
-        this.genereazaSemestru();
+    /**
+     * @param data - LocalDate
+     * @return true - daca data trimisa este in perioada vacantei
+     * false - altfel
+     */
+    public boolean apartineVacantei(LocalDate data)
+    {
+        if (data.isAfter(beginHoliday) && data.isBefore(endHoliday))
+            return true;
+        return false;
     }
 
-    public ArrayList<Perioada> getSaptamani() {
-        return this.saptamani;
+    /**
+     * @return anul universitar
+     */
+    public int getAnUniversitar() {
+        return anUniversitar;
     }
 
-    public void setSaptamani(ArrayList<Perioada> saptamani) {
-        this.saptamani = saptamani;
+    /**
+     * seteaza anul universitar
+     * @param anUniversitar - intreg
+     */
+    public void setAnUniversitar(int anUniversitar) {
+        this.anUniversitar = anUniversitar;
     }
 
-    public int getNrSaptamani() {
-        return this.nrSaptamani;
+    /**
+     * @return semestru
+     */
+    public int getSemestru() {
+        return semestru;
     }
 
-    public void setNrSaptamani(int nrSaptamani) {
-        this.nrSaptamani = nrSaptamani;
-        this.genereazaSemestru();
+    /**
+     * seteaza semestrul
+     * @param semestru - intreg
+     */
+    public void setSemestru(int semestru) {
+        this.semestru = semestru;
     }
 
-    public int getInceputVacanta() {
-        return this.inceputVacanta;
+    /**
+     * @return inceputul semestrului
+     */
+    public LocalDate getStartSemester() {
+        return startSemester;
     }
 
-    public void setInceputVacanta(int inceputVacanta) {
-        this.inceputVacanta = inceputVacanta;
-        this.genereazaSemestru();
+    /**
+     * seteaza inceputulul semestrului
+     * @param startSemester - LocalDate
+     */
+    public void setStartSemester(LocalDate startSemester) {
+        this.startSemester = startSemester;
     }
 
-    public int getSfarsitVacanta() {
-        return this.sfarsitVacanta;
+    /**
+     * @return inceputul vacantei
+     */
+    public LocalDate getBeginHoliday() {
+        return beginHoliday;
     }
 
-    public void setSfarsitVacanta(int sfarsitVacanta) {
-        this.sfarsitVacanta = sfarsitVacanta;
-        this.genereazaSemestru();
+    /**
+     * seteaza inceputul vacantei
+     * @param beginHoliday - LocalDate
+     */
+    public void setBeginHoliday(LocalDate beginHoliday) {
+        this.beginHoliday = beginHoliday;
     }
 
+    /**
+     * @return sfarsitul vacantei
+     */
+    public LocalDate getEndHoliday() {
+        return endHoliday;
+    }
+
+    /**
+     * seteaza sfarsitul vacantei
+     * @param endHoliday - LocalDate
+     */
+    public void setEndHoliday(LocalDate endHoliday) {
+        this.endHoliday = endHoliday;
+    }
+
+    /**
+     * @return sfarsitul semestrului
+     */
+    public LocalDate getEndSemester() {
+        return endSemester;
+    }
+
+    /**
+     * seteaza sfarsitul semestrului
+     * @param endSemester - LocalDate
+     */
+    public void setEndSemester(LocalDate endSemester) {
+        this.endSemester = endSemester;
+    }
 }

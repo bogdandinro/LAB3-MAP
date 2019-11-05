@@ -3,17 +3,21 @@ package ui;
 import entities.Student;
 import entities.Tema;
 import entities.validator.ValidationException;
+import repository.StudentFileRepository;
+import repository.TemaFileRepository;
 import services.Service;
+import structures.StructuraAnUniversitar;
 
 import java.util.Scanner;
 
 public class Ui {
     private Service service;
 
-    public Ui() {
-        this.service = Service.getInstance();
+    public Ui(StructuraAnUniversitar structuraAnUniversitar, TemaFileRepository temaFileRepository, StudentFileRepository studentFileRepository) {
+        this.service = Service.getInstance(structuraAnUniversitar, temaFileRepository, studentFileRepository);
     }
-    public void run(){
+
+    public void run() {
         String cmd="";
         boolean finish = false;
         Scanner read = new Scanner(System.in);
@@ -63,7 +67,6 @@ public class Ui {
                 System.out.println(e);
             }
         }
-
     }
 
     private void printMenu()
@@ -75,47 +78,53 @@ public class Ui {
         System.out.println("stergere(Student/Tema) - stergere student/tema");
         System.out.println("afisare(Studenti/Teme) - afiseaza studentii/temele");
     }
-    private void adaugareStudent(Scanner read) throws IllegalArgumentException, ValidationException{
+
+    private void adaugareStudent(Scanner read) throws IllegalArgumentException,ValidationException
+    {
         System.out.println("Id-ul studentului:");
-        Long id =Long.parseLong(read.nextLine());
-        System.out.println("Media studentului:");
-        Float medie =Float.parseFloat(read.nextLine());
-        System.out.println("Numele Studentului:");
-        String nume =read.nextLine();
+        Long id = Long.parseLong(read.nextLine());
+        System.out.println("Numele studentului:");
+        String nume = read.nextLine();
+        System.out.println("Media studentului");
+        Float media= Float.parseFloat(read.nextLine());
         System.out.println("Prenumele studentului:");
-        String prenume =read.nextLine();
+        String prenume = read.nextLine();
         System.out.println("Grupa studentului:");
-        Integer grupa=Integer.parseInt(read.nextLine());
-        System.out.println("Emailul studentului:");
-        String email=read.nextLine();
-        System.out.println("Profesorul coordonator:");
-        String prof=read.nextLine();
-        Student student=new Student(nume,medie,prenume,grupa,email,prof);
+        int grupa = Integer.parseInt(read.nextLine());
+        System.out.println("Email-ul studentului:");
+        String email = read.nextLine();
+        System.out.println("Cadrul didactic indrumator de la laborator:");
+        String cadruDidacticIndrumatorLab = read.nextLine();
+
+        Student student = new Student(nume,media, prenume, grupa, email, cadruDidacticIndrumatorLab);
         student.setId(id);
         service.adaugareStudent(student);
         System.out.println(student);
     }
 
-    private void modificareStudent(Scanner read) throws IllegalArgumentException,ValidationException{
+    private void modificareStudent(Scanner read) throws IllegalArgumentException, ValidationException
+    {
         System.out.println("Id-ul studentului:");
-        Long id =Long.parseLong(read.nextLine());
-        System.out.println("Media studentului:");
-        Float medie =Float.parseFloat(read.nextLine());
-        System.out.println("Numele Studentului:");
-        String nume =read.nextLine();
+        Long id = Long.parseLong(read.nextLine());
+        System.out.println("Numele studentului:");
+        String nume = read.nextLine();
+        System.out.println("Media studentului");
+        Float media= Float.parseFloat(read.nextLine());
         System.out.println("Prenumele studentului:");
-        String prenume =read.nextLine();
+        String prenume = read.nextLine();
         System.out.println("Grupa studentului:");
-        Integer grupa=Integer.parseInt(read.nextLine());
-        System.out.println("Emailul studentului:");
-        String email=read.nextLine();
-        System.out.println("Profesorul coordonator:");
-        String prof=read.nextLine();
-        Student student=new Student(nume,medie,prenume,grupa,email,prof);
+        int grupa = Integer.parseInt(read.nextLine());
+        System.out.println("Email-ul studentului:");
+        String email = read.nextLine();
+        System.out.println("Cadrul didactic indrumator de la laborator:");
+        String cadruDidacticIndrumatorLab = read.nextLine();
+
+        Student student = new Student(nume,media, prenume, grupa, email, cadruDidacticIndrumatorLab);
         student.setId(id);
-        service.modificareStudent(student);
-        System.out.println(student);
+        Student studentModificat = service.modificareStudent(student);
+        System.out.println(studentModificat);
     }
+
     private void cautareStudent(Scanner read) throws IllegalArgumentException, ValidationException
     {
         System.out.println("Id-ul studentului:");
@@ -123,6 +132,7 @@ public class Ui {
         Student student = service.cautareStudent(id);
         System.out.println(student);
     }
+
     private void stergereStudent(Scanner read) throws IllegalArgumentException, ValidationException
     {
         System.out.println("Id-ul studentului:");
@@ -131,9 +141,11 @@ public class Ui {
         Student student = service.stergereStudent(id);
         System.out.println(student);
     }
+
     private void afisareStudenti()
     {
-        service.afisareStudent();
+        service.afisareStudent().forEach(System.out::println);
+        System.out.println();
     }
 
     private void adaugareTema(Scanner read) throws IllegalArgumentException, ValidationException
@@ -162,8 +174,8 @@ public class Ui {
 
         Tema tema = new Tema(descriere, deadline);
         tema.setId(id);
-        service.modificareTema(tema);
-        System.out.println(tema);
+        Tema temaModificata = service.modificareTema(tema);
+        System.out.println(temaModificata);
     }
 
     private void cautareTema(Scanner read) throws IllegalArgumentException, ValidationException
@@ -186,7 +198,7 @@ public class Ui {
 
     private void afisareTeme()
     {
-        service.afiseazaTeme();
+        service.afiseazaTeme().forEach(System.out::println);
+        System.out.println();
     }
-
 }
